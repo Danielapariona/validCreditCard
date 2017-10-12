@@ -2,37 +2,41 @@ function isValidCard(numCard) {
   var arrayReverse = [];
   var state = "";
   var strNum = numCard.toString();
+
+  // Almacena el numero dado al reves
   for (var i = strNum.length - 1; i >= 0; i--) {
     arrayReverse.push(parseInt(strNum[i]));
   }
 
-  var sumPairs = 0; // Almacena la suma de los pares que cumplen la condición
-  var oddSum = 0; // Almacena la suma de los números impares
-  for (var i = 0; i < arrayReverse.length; i++) {
-    var position = i + 1; // Se suma 1 para que la posición empiece con 1
-    var current = 1;
-    if(position % 2 == 0) { // Si la posición es par se multiplica por 2 y se suma sus cifras
+  //Modifica los valores pares y los modifica.
+  for (var i = 1; i < arrayReverse.length-1; i++) {
+    if(i % 2 == 0) {
       var result;
-      current = arrayReverse[i] * 2;
-      current >= 10 ? (result = (current) % 10 + parseInt(current/10),sumPairs += result) : (sumPairs += current);
-    } else {
-      oddSum += arrayReverse[i];
+      current = arrayReverse[i-1] * 2;
+      arrayReverse[i-1] = current % 10 + parseInt(current/10)
     }
   }
-  (sumPairs + oddSum) % 10 == 0 ? state = "válida" : state = "inválida";
+
+  // Se realiza la suma de los números del array arrayReverse
+  var sum = 0;
+  for (var i = 0; i < arrayReverse.length; i++) {
+    sum += arrayReverse[i];
+  }
+
+  var state;
+  sum % 10 === 0 ? state = "válida" : state = "inválida";
   return state;
 }
+
 
 do {
   var state;
   var numCard = prompt("Ingrese un número de tarjeta de crédito");
-  if(numCard == "") {
-    alert("No ha ingresado ningún número");
-  } else if (numCard.length < 16 || numCard.length > 16 ){
-    document.write("Ha ingresado un número diferente a 16 digitos: Número inválido");
-  } else {
+  if(numCard.length === 16) {
     numCard = parseInt(numCard);
     document.write("El número ingresado es: " + numCard + '</br>');
     document.write("La tarjeta ingresada es: " + isValidCard(numCard));
+  } else if(numCard == "" || numCard.length !== 16 ) {
+    document.write("Ha ingresado un número inválido" + '</br>');
   }
 } while (!numCard);
